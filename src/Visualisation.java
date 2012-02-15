@@ -6,6 +6,11 @@ import processing.core.PFont;
 import processing.core.PVector;
 import processing.opengl.*;
 
+/**
+ * Comments Everywhere!
+ * @author maximilian
+ *
+ */
 public class Visualisation extends PApplet
 {
     float   centerX, centerY, centerZ;
