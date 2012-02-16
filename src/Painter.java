@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import picking.Picker;
 import processing.core.PApplet;
@@ -20,7 +21,7 @@ public class Painter
 	for (Keel k : a.getKeels())
 	    draw(p, k);
 
-
+	
 	for (int i = 0; i < a.getRopePointsPerKeel(); i++)
 	{
 	    p.strokeWeight(1);
@@ -37,7 +38,7 @@ public class Painter
 	    }
 	}
 	
-	for(int layer = 0; layer < a.getRopePointsPerKeel(); layer ++)
+	/*for(int layer = 0; layer < a.getRopePointsPerKeel(); layer ++)
 	{
 	    if(layer < a.getRopePointsPerKeel()-1)
 		picker.start(layer);
@@ -46,7 +47,54 @@ public class Painter
 	    {
 		draw(p, a.getJointAt(keel, layer));
 	    }
+	}*/
+	
+	
+	
+	//draw some sheets on the outside	
+	
+	
+	
+	for(int r = 0; r < a.getRopePointsPerKeel() - 1; r++)
+	{
+	    p.fill(0, 255, 255, 0);
+	    picker.start(r);
+	    if(r == highLightedLayer)
+		p.fill(0, 255, 255, 100);
+	    for(int keel = 0; keel < a.getNumberOfKeels(); keel++)
+	    {
+		//TODO: Some very ugly stuff going on here. We need a Vertex/Position/Point class, that extends Matrix
+		//So we do not have to get out the coordinates in such a ugly way!
+		p.beginShape();
+		float x, y, z;
+		double[] pos;
+		pos = a.getJointAt(keel, r).getPosition().getColumn(0);
+		x = (float)pos[0];
+		y = (float)pos[1];
+		z = (float)pos[2];
+		p.vertex(x, y, z);
+		
+		pos = a.getJointAt(keel, r+1).getPosition().getColumn(0);
+		x = (float)pos[0];
+		y = (float)pos[1];
+		z = (float)pos[2];
+		p.vertex(x, y, z);
+		
+		pos = a.getJointAt(a.keelAfter(keel), r+1).getPosition().getColumn(0);
+		x = (float)pos[0];
+		y = (float)pos[1];
+		z = (float)pos[2];
+		p.vertex(x, y, z);
+		
+		pos = a.getJointAt(a.keelAfter(keel), r).getPosition().getColumn(0);
+		x = (float)pos[0];
+		y = (float)pos[1];
+		z = (float)pos[2];
+		p.vertex(x, y, z);
+		p.endShape(p.CLOSE);
+	    }
 	}
+	
 	
 	p.popMatrix();
 	

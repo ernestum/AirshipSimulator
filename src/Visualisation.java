@@ -58,6 +58,9 @@ public class Visualisation extends PApplet
 	translate(centerX, centerY, centerZ);
 	scale(30);
 	rotateY(worldRotation);
+	
+	
+	
 	Painter.draw(this, a, highLightedLayer, picker);
 	textAlign(LEFT);
 	drawRuler(15, 5, 20, new PVector(0, 1, 0));
@@ -129,7 +132,7 @@ public class Visualisation extends PApplet
 	worldRotation = startDragRotation + (mouseX - startDragMousePos.x) / 200;
 	length = startLength + (mouseY - startDragMousePos.y) / 20;
 	a.setLength(length);
-
+	highLightedLayer = picker.get(mouseX, mouseY);
     }
 
     public void keyPressed()
@@ -169,9 +172,7 @@ public class Visualisation extends PApplet
 
     public void mouseMoved()
     {
-	int id = picker.get(mouseX, mouseY);
-	if(id != -1) System.out.println(id);
-	highLightedLayer = id;
+	highLightedLayer = picker.get(mouseX, mouseY);
     }
 
     private Airship makeAirship()

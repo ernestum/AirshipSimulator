@@ -70,9 +70,8 @@ public class Airship
 	for (int joint = 0; joint < ropePointsPerKeel-1; joint++)
 	    for (int keel = 0; keel < numberOfKeels; keel++)
 	    {
-		int nextKeel = (keel + 1) % numberOfKeels;
-		int prevKeel = (keel - 1) % numberOfKeels;
-		prevKeel = prevKeel == -1 ? numberOfKeels-1 : prevKeel; // to fix the weird behavior of mod in java
+		int nextKeel = keelAfter(keel);
+		int prevKeel = keelBefore(keel);
 		
 		System.out.println("Next Keel: " + nextKeel);
 		System.out.println("Actual Keel: " + keel);
@@ -91,6 +90,18 @@ public class Airship
 
 	ropes.add(new Rope(new JointOnKeel(keels.get(0), 0), new JointOnKeel(keels.get(0), 1)));
     }
+    
+    public int keelBefore(int keel)
+    {
+	int prevKeel = (keel - 1) % getNumberOfKeels();
+	prevKeel = prevKeel == -1 ? getNumberOfKeels()-1 : prevKeel; // to fix the weird behavior of mod in java
+	return prevKeel;
+    }
+    
+    public int keelAfter(int keel)
+    {
+	return (keel + 1) % getNumberOfKeels();
+    }
 
     private int calcNumberOfRopes(int nrKeels, int ropePointsPerKeel)
     {
@@ -108,7 +119,7 @@ public class Airship
 	return ropes;
     }
 
-    public ArrayList<Rope> getRopesAtPos(int x)
+    /*public ArrayList<Rope> getRopesAtPos(int x)
     {
         ArrayList<Rope> ropesAtX = new ArrayList<Rope>(getNumberOfKeels());
     
@@ -121,7 +132,7 @@ public class Airship
         //ropesAtX.add(ropes.get(i*(ropePointsPerKeel*2 - 2) + 2 * x + 1));
     
         return ropesAtX;
-    }
+    }*/
     
     public ArrayList<Rope> getRopesAtLayer(int l)
     {	
