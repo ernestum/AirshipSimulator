@@ -59,8 +59,8 @@ public class Painter
 	{
 	    p.fill(0, 255, 255, 0);
 	    picker.start(r);
-	    if(r == highLightedLayer)
-		p.fill(0, 255, 255, 100);
+	    /*if(r == highLightedLayer)
+		p.fill(0, 255, 255, 100);*/
 	    for(int keel = 0; keel < a.getNumberOfKeels(); keel++)
 	    {
 		//TODO: Some very ugly stuff going on here. We need a Vertex/Position/Point class, that extends Matrix

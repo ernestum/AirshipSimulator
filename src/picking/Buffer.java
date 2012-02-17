@@ -85,6 +85,8 @@ public class Buffer extends PGraphics3D {
 	public int getId(int x, int y) {
 		super.loadPixels();
 		// COLOR -16777216 (black) to -1 => ID -1 (no object) to 16777214 
+		if(y*width+x >= pixels.length || y*width+x < 0)
+		    return -1;
 		int id = pixels[y*width+x] + 16777215;
 		return id;
 	}
