@@ -117,5 +117,4 @@ public class Picker {
 	public PGraphics getBuffer() {
 		return buffer;
 	}
-	
 }

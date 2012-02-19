@@ -8,9 +8,8 @@ public class TopView extends AirshipViewer
     @Override
     protected void initAirshipViewer()
     {
-	/*setWidth(1200);
-	setHeight(900);*/
 	setOpenGL(true);
+	setOrtho(true);
 	setWorldXRotation(HALF_PI);
     }
     

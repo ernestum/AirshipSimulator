@@ -73,10 +73,6 @@ public class Airship
 		int nextKeel = keelAfter(keel);
 		int prevKeel = keelBefore(keel);
 		
-		System.out.println("Next Keel: " + nextKeel);
-		System.out.println("Actual Keel: " + keel);
-		System.out.println("Prev Keel: " + prevKeel + "\n");
-		
 		ropes.add(new Rope(jointsOnKeels[joint][keel], jointsOnKeels[joint + 1][nextKeel]));
 		ropes.add(new Rope(jointsOnKeels[joint][keel], jointsOnKeels[joint + 1][prevKeel]));
 		/*if (joint > 0)

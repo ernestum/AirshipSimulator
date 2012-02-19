@@ -13,42 +13,63 @@ import processing.opengl.*;
  */
 public abstract class AirshipViewer extends PApplet
 {
-    private boolean openGL	    = true;
-    private boolean ortho	     = false;
-    private int width = 600, height = 600;
+    private boolean       openGL	    = false;
+    private boolean       ortho	     = false;
+    private int	   width	     = 600, height = 600;
 
-    private PVector center = new PVector();
-    private PVector centerOffset = new PVector();
-    private float   zoomFactor	= 50;
-    
-    private float worldXRotation    = 0;
-    private float worldYRotation    = 0;
+    private PVector       center	    = new PVector();
+    private PVector       centerOffset      = new PVector();
+    private float	 zoomFactor	= 50;
+
+    private float	 worldXRotation    = 0;
+    private float	 worldYRotation    = 0;
 
     //airship parameters
-    private static double  length	    = 18 * 1;
-    private static double  keelLength	= 20 * 1;
-    private static int     numberOfKeels     = 3;
-    private static int     ropePointsPerKeel = 15;
+    private static double length	    = 18 * 1;
+    private static double keelLength	= 20 * 1;
+    private static int    numberOfKeels     = 3;
+    private static int    ropePointsPerKeel = 15;
+    private static int highLightedLayer = -1;
 
-    public static Airship airship = makeAirship();
+    public static Airship airship	   = makeAirship();
 
-    private PFont   font = createFont("Arial", 71);
+    private PFont	 font	      = createFont("Arial", 71);
 
-    private Picker  picker;
+    private Picker	picker;
 
     protected abstract void initAirshipViewer();
-    
+
     public void setup()
     {
 	initAirshipViewer();
+
+	center.x = width / 2;
+	center.y = height / 2;
+
+	if (ortho)
+	{
+	    if (openGL)
+	    {
+		System.err.println("Ortho will not work with OpenGL -> OpenGL is deactivated!");
+		openGL = false;
+
+	    } 
+	    center.x = width;
+	    center.y = height;
+	}
+
 	if (openGL)
 	{
 	    size(width, height, OPENGL); //Faster, better looking, better fonts but not platform independent
 	    //hint(ENABLE_DEPTH_SORT);
 	    hint(DISABLE_OPENGL_2X_SMOOTH);
-	} else
+	}
+	else
+	{
 	    size(width, height, P3D);
+	}
 
+	
 	addMouseWheelListener(new java.awt.event.MouseWheelListener() {
 	    public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt)
 	    {
@@ -58,23 +79,20 @@ public abstract class AirshipViewer extends PApplet
 
 	smooth();
 
-	center.x = width / 2;
-	center.y = height / 2;
 	picker = new Picker(this);
-
-	if (ortho)
-	{
-	    center.x = width;
-	    center.y = height;
-	    ortho();
-	}
     }
 
     
-    int   highLightedLayer = -1;
 
     public void draw()
     {
+	if (ortho)
+	    ortho(0, width, 0, height, -1000, 1000);
+
+	pushMatrix();
+	translate(0, 6, 0);
+	drawLabels();
+	popMatrix();
 	
 	stroke(0);
 	fill(0);
@@ -87,23 +105,19 @@ public abstract class AirshipViewer extends PApplet
 	scale(zoomFactor);
 	rotateX(worldXRotation);
 	rotateY(worldYRotation);
-
-	Painter.draw(this, airship, highLightedLayer, picker);
 	drawGridsAndRulers();
+	Painter.draw(this, airship, highLightedLayer, picker);
+	
 	popMatrix();
 
 	
-
 	picker.stop();
-	pushMatrix();
-	translate(0, 6, 0);
-	drawLabels();
-	popMatrix();
+	
     }
-    
+
     protected abstract void drawGridsAndRulers();
+
     protected abstract void drawLabels();
-    
 
     public void drawRuler(float length, float sectionsDistance, float SectionsSize, PVector direction)
     {
@@ -155,13 +169,14 @@ public abstract class AirshipViewer extends PApplet
 
     public void mouseWheel(int delta)
     {
-	zoomFactor += delta * 4;
+	if(zoomFactor + delta*4 > 0)
+	    zoomFactor += delta * 4;
     }
 
-    PVector startDragMousePos = null;
-    float   startDragRotation = 0;
-    double  startLength       = 0;
-    float startCenterOffsetY = 0;
+    PVector startDragMousePos  = null;
+    float   startDragRotation  = 0;
+    double  startLength	= 0;
+    float   startCenterOffsetY = 0;
 
     public void mousePressed()
     {
@@ -176,21 +191,20 @@ public abstract class AirshipViewer extends PApplet
 	mouseDraggedActions();
 	highLightedLayer = picker.get(mouseX, mouseY);
     }
-    
+
     abstract void mouseDraggedActions();
-    
-    
+
     protected void mouseXdragsRotationY()
     {
 	worldYRotation = startDragRotation + (mouseX - startDragMousePos.x) / 200;
     }
-    
+
     protected void mouseYdragsLength()
     {
 	length = startLength + (mouseY - startDragMousePos.y) / 20;
 	airship.setLength(length);
     }
-    
+
     protected void mouseYdragsCenterOffsetY()
     {
 	centerOffset.y = startCenterOffsetY + (mouseY - startDragMousePos.y) / 5;
@@ -211,7 +225,7 @@ public abstract class AirshipViewer extends PApplet
 		    if (numberOfKeels > 2)
 			numberOfKeels--;
 		    makeAirship();
-		    
+
 		    break;
 
 		case RIGHT:
@@ -230,95 +244,105 @@ public abstract class AirshipViewer extends PApplet
 
     public void mouseMoved()
     {
+
 	highLightedLayer = picker.get(mouseX, mouseY);
     }
-    
 
     public int getWidth()
     {
-        return width;
+	return width;
     }
 
     public void setWidth(int width)
     {
-        this.width = width;
+	this.width = width;
     }
 
     public int getHeight()
     {
-        return height;
+	return height;
     }
 
     public void setHeight(int height)
     {
-        this.height = height;
+	this.height = height;
     }
 
     public float getZoomFactor()
     {
-        return zoomFactor;
+	return zoomFactor;
     }
 
     public void setZoomFactor(float zoomFactor)
     {
-        this.zoomFactor = zoomFactor;
+	this.zoomFactor = zoomFactor;
     }
 
     public float getWorldXRotation()
     {
-        return worldXRotation;
+	return worldXRotation;
     }
 
     public void setWorldXRotation(float worldRotation)
     {
-        this.worldXRotation = worldRotation;
+	this.worldXRotation = worldRotation;
     }
 
     public float getWorldYRotation()
     {
-        return worldYRotation;
+	return worldYRotation;
     }
 
     public void setWorldYRotation(float worldYRotation)
     {
-        this.worldYRotation = worldYRotation;
+	this.worldYRotation = worldYRotation;
     }
 
     public PFont font()
     {
-        return font;
+	return font;
     }
 
     static private Airship makeAirship()
     {
-	airship =  new Airship(length, keelLength, numberOfKeels, ropePointsPerKeel);
+	airship = new Airship(length, keelLength, numberOfKeels, ropePointsPerKeel);
 	return airship;
     }
 
     public boolean isOpenGL()
     {
-        return openGL;
+	return openGL;
     }
 
     public void setOpenGL(boolean openGL)
     {
-        this.openGL = openGL;
+	this.openGL = openGL;
     }
-    
 
     public PVector getCenterOffset()
     {
-        return centerOffset;
+	return centerOffset;
     }
 
     public void setCenterOffset(PVector centerOffset)
     {
-        this.centerOffset = centerOffset;
+	System.out.println("somebody setting the offset");
+	this.centerOffset = centerOffset;
+    }
+
+    public boolean isOrtho()
+    {
+	return ortho;
+    }
+
+    public void setOrtho(boolean ortho)
+    {
+	this.ortho = ortho;
     }
 
     public static void main(String[] args)
     {
 	Main.main(null);
     }
-    
+
 }

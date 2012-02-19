@@ -58,6 +58,9 @@ public class Painter
 	for(int r = 0; r < a.getRopePointsPerKeel() - 1; r++)
 	{
 	    p.fill(0, 255, 255, 0);
+	    p.noStroke();
+	
+	    
 	    picker.start(r);
 	    /*if(r == highLightedLayer)
 		p.fill(0, 255, 255, 100);*/

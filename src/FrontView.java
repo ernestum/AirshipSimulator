@@ -1,25 +1,24 @@
 import processing.core.PVector;
 
 
-public class NormalView extends AirshipViewer
+public class FrontView extends AirshipViewer
 {
 
     @Override
     protected void initAirshipViewer()
     {
+	setWorldYRotation(HALF_PI);
 	setOpenGL(true);
-	setCenterOffset(new PVector(0, 30, 0));
+	setOrtho(true);
     }
 
     @Override
     protected void drawGridsAndRulers()
     {
-	textAlign(LEFT);
-	//drawRuler(15, 5, 20, new PVector(0, 1, 0));
 	drawRuler(15, 5, 20, new PVector(0, 0, 1));
 	drawRuler(15, 5, 20, new PVector(1, 0, 0));
 	drawRuler(15, 5, 20, new PVector(-1, 0, 0));
-	drawGrid(new PVector(-20, 0, -20), new PVector(40, 0, 0), new PVector(0, 0, 40), 40, 40);
+	drawGrid(new PVector(0, -5, -5), new PVector(0, 0, 10), new PVector(0, 10, 0), 10, 10);
     }
 
     @Override
@@ -32,8 +31,8 @@ public class NormalView extends AirshipViewer
     @Override
     void mouseDraggedActions()
     {
-	mouseXdragsRotationY();
-	mouseYdragsCenterOffsetY();
+	mouseYdragsLength();
+	
     }
 
 }
