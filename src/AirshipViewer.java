@@ -38,7 +38,7 @@ public abstract class AirshipViewer extends PApplet
     
     private PImage human;
     
-    private boolean pdfExport = false;
+    private boolean export = false;
 
     protected abstract void initAirshipViewer();
 
@@ -75,11 +75,6 @@ public abstract class AirshipViewer extends PApplet
 
     public void draw()
     {
-	
-	if(pdfExport)
-	{
-	    beginRecord(PDF, "output.pdf");
-	}
 	background(255);
 	if (ortho)
 	    ortho(0, width, 0, height, -1000, 1000);
@@ -110,12 +105,10 @@ public abstract class AirshipViewer extends PApplet
 	popMatrix();
 	
 	picker.stop();
-	
-	if(pdfExport)
+	if(export)
 	{
-	    endRecord();
-	    pdfExport = false;
-	    System.out.println("output.pdf saved!");
+	    saveFrame("Frame-" + frameCount + ".png");
+	    export = false;
 	}
     }
 
@@ -246,9 +239,8 @@ public abstract class AirshipViewer extends PApplet
 	}
 	switch(key)
 	    {
-		case 'p':
-		    pdfExport = true;
-		    System.out.println("expor pdf!");
+		case 'e':
+		    export = true;
 		    break;
 	    }
     }
