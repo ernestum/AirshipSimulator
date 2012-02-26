@@ -31,11 +31,12 @@ public abstract class AirshipViewer extends PApplet
 
     public static Airship airship	   = makeAirship();
 
-    private PFont	 font	      = createFont("Arial", 71);
+    private PFont	 bigFont	      = createFont("Arial", 72);
+    private PFont	 smallFont	      = createFont("Arial", 16);
 
     private Picker	picker;
     
-    private PShape human;
+    private PImage human;
     
     private boolean pdfExport = false;
 
@@ -44,13 +45,14 @@ public abstract class AirshipViewer extends PApplet
     public void setup()
     {
 	initAirshipViewer();
-
 	center.x = width / 2;
 	center.y = height / 2;
 
 	
 	size(width, height, P3D);
 	hint(DISABLE_OPENGL_2X_SMOOTH);
+	hint(ENABLE_DEPTH_MASK);
+	hint(DISABLE_DEPTH_TEST);
 	smooth();
 
 	
@@ -65,7 +67,7 @@ public abstract class AirshipViewer extends PApplet
 
 	picker = new Picker(this);
 	
-	human = loadShape("human.svg");
+	human = loadImage("human.png");
 	
     }
 
@@ -76,7 +78,7 @@ public abstract class AirshipViewer extends PApplet
 	
 	if(pdfExport)
 	{
-	    beginRaw(PDF, "output.pdf");
+	    beginRecord(PDF, "output.pdf");
 	}
 	background(255);
 	if (ortho)
@@ -84,22 +86,19 @@ public abstract class AirshipViewer extends PApplet
 
 	pushMatrix();
 	translate(0, 6, 0);
-	drawLabels();
-	popMatrix();
-	
 	stroke(0);
 	fill(0);
-	textFont(font, 16);
-	
+	textFont(smallFont);
+	drawLabels();
+	popMatrix();
 
-	
 	pushMatrix();
 
 	translate(center.x + centerOffset.x, center.y + centerOffset.y, center.z + centerOffset.z);
 	
 	scale(zoomFactor);
 	noStroke();
-	//shape(human, -0.8125f/2.0f, -1.8f, 0.8125f, 1.8f);
+	image(human, -0.8125f/2.0f, -1.8f, 0.8125f, 1.8f);
 	rotateX(worldXRotation);
 	rotateY(worldYRotation);
 	
@@ -114,7 +113,7 @@ public abstract class AirshipViewer extends PApplet
 	
 	if(pdfExport)
 	{
-	    endRaw();
+	    endRecord();
 	    pdfExport = false;
 	    System.out.println("output.pdf saved!");
 	}
@@ -129,16 +128,16 @@ public abstract class AirshipViewer extends PApplet
 	fill(100);
 	stroke(255-0, 255-150, 255-190);
 	line(0, 0, 0, direction.x * length, direction.y * length, direction.z * length);
-	textFont(font, 0.7f);
+	textFont(bigFont, 0.7f);
 	ellipseMode(CENTER);
-	for (int i = 0; i < (int) (length / sectionsDistance); i++)
+	for (int i = 0; i < (int) (length / sectionsDistance)+1; i++)
 	{
 	    pushMatrix();
 	    translate(direction.x * i * sectionsDistance, direction.y * i * sectionsDistance, direction.z * i
 		    * sectionsDistance);
 	    rotateY(-(worldYRotation));
 	    rotateX(-(worldXRotation));
-	    text(Math.round(i * sectionsDistance) + "", 0, 0);
+	    text(Math.round(i * sectionsDistance) + "m", 0, 0);
 	    popMatrix();
 	}
 	sectionsDistance /= 5;
@@ -154,16 +153,16 @@ public abstract class AirshipViewer extends PApplet
 
     public void drawGrid(PVector pos, PVector span1, PVector span2, int span1Steps, int span2Steps)
     {
-	stroke(100);
+	stroke(255-0, 255-150, 255-190);
 	strokeWeight(0.1f);
-	for (int i = 0; i < span1Steps; i++)
+	for (int i = 0; i < span1Steps+1; i++)
 	{
 	    PVector start = PVector.add(pos, PVector.mult(span1, (1 / (float) span1Steps) * i));
 	    PVector end = PVector.add(start, span2);
 	    line(start.x, start.y, start.z, end.x, end.y, end.z);
 	}
 
-	for (int i = 0; i < span2Steps; i++)
+	for (int i = 0; i < span2Steps+1; i++)
 	{
 	    PVector start = PVector.add(pos, PVector.mult(span2, (1 / (float) span2Steps) * i));
 	    PVector end = PVector.add(start, span1);
@@ -310,10 +309,10 @@ public abstract class AirshipViewer extends PApplet
 	this.worldYRotation = worldYRotation;
     }
 
-    public PFont font()
+    /*public PFont font()
     {
 	return font;
-    }
+    }*/
 
     static private Airship makeAirship()
     {

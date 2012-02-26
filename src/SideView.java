@@ -1,13 +1,13 @@
 import processing.core.PVector;
 
 
-public class FrontView extends AirshipViewer
+public class SideView extends AirshipViewer
 {
 
     @Override
     protected void initAirshipViewer()
     {
-	setWorldYRotation(HALF_PI);
+	setWorldYRotation(0);
 	setHeight(500);
 	setWidth(700);
 	setOrtho(true);
@@ -16,17 +16,17 @@ public class FrontView extends AirshipViewer
     @Override
     protected void drawGridsAndRulers()
     {
-	drawRuler(10, 5, 20, new PVector(0, 0, 1));
+	drawRuler(10, 5, 20, new PVector(1, 0, 0));
 	drawRuler(10, 5, 20, new PVector(0, -1, 0));
 	//drawRuler(15, 5, 20, new PVector(1, 0, 0));
 	//drawRuler(15, 5, 20, new PVector(-1, 0, 0));
-	drawGrid(new PVector(0, -10, -10), new PVector(0, 0, 20), new PVector(0, 20, 0), 20, 20);
+	drawGrid(new PVector(-10, -10, 0), new PVector(20, 0, 0), new PVector(0, 20, 0), 20, 20);
     }
 
     @Override
     protected void drawLabels()
     {
-	text("Front View", 30, 30);
+	text("Side View", 30, 30);
     }
 
     @Override

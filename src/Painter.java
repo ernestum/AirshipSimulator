@@ -25,11 +25,11 @@ public class Painter
 	for (int i = 0; i < a.getRopePointsPerKeel(); i++)
 	{
 	    p.strokeWeight(1);
-	    p.stroke(150);
+	    p.stroke(0);
 	    if (i == highLightedLayer)
 	    {
 		p.stroke(0);
-		p.strokeWeight(1);
+		p.strokeWeight(2);
 	    }
 	    ArrayList<Rope> layerIRopes = a.getRopesAtLayer(i);
 	    for (Rope r : layerIRopes)

@@ -10,26 +10,15 @@ public class TopView extends AirshipViewer
     {
 	setOrtho(true);
 	setWorldXRotation(HALF_PI);
+	setHeight(500);
+	setWidth(700);
 	setZoomFactor(24);
     }
     
     public void drawLabels()
     {
-	double volume = Math.round(airship.calcVolume() * 10) / 10.0;
-	double liftH2 = Math.round(volume * 0.9 * 10) / 10.0;
-	double liftM4 = Math.round(volume * 0.4 * 10) / 10.0;
-	double l = Math.round(airship.getLength() * 10) / 10.0;
-	double maxR = Math.round(airship.getMaxRadius() * 10) / 10.0;
-
-	textAlign(LEFT);
-	textFont(font(), 16);
-	fill(0);
-	text("Drag the mouse, play with the arrow keys!", 30, 30);
-	text("Length:\n" + "Keel Length: \n" + "Maximum Radius:\n" + "Volume:\n" + "Lift with hydrogen:\n"
-		+ "Lift with methane:", 30, 50);
-	textAlign(RIGHT);
-	text(l + "m\n" + airship.getKeelLength() + "m\n" + maxR + "m\n" + volume + "m3\n~" + liftH2 + "kg\n~" + liftM4 + "kg",
-		300, 50);
+	text("Top View", 30, 30);
+	
     }
     
     protected void drawGridsAndRulers()

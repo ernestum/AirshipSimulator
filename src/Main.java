@@ -1,4 +1,7 @@
+import java.util.Arrays;
+
 import processing.core.PApplet;
+import processing.core.PFont;
 
 
 public class Main
@@ -9,9 +12,11 @@ public class Main
      */
     public static void main(String[] args)
     {
-	PApplet.main(new String[] { "FrontView" });
-	PApplet.main(new String[] { "TopView" });
-	PApplet.main(new String[] { "NormalView" });
+	System.out.println(Arrays.toString(PFont.list()));
+	PApplet.main(new String[] {"--location=1210,0", "TopView" });
+	PApplet.main(new String[] {"--location=0,0",  "NormalView" });
+	//PApplet.main(new String[] {"--location=1210,510", "SideView" });
+	PApplet.main(new String[] {"--location=1210,510", "FrontView" });
 	//PApplet.main(new String[] { "AirshipViewer" });
     }
 
