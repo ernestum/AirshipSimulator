@@ -99,17 +99,21 @@ public abstract class AirshipViewer extends PApplet
 	textFont(font, 16);
 	background(0xFFFFFF);
 
+	
 	pushMatrix();
 
 	translate(center.x + centerOffset.x, center.y + centerOffset.y, center.z + centerOffset.z);
 	scale(zoomFactor);
 	rotateX(worldXRotation);
 	rotateY(worldYRotation);
-	drawGridsAndRulers();
+	
 	Painter.draw(this, airship, highLightedLayer, picker);
+	if(ortho)
+	    translate(-width/2, -height/2);
+	
+	drawGridsAndRulers();
 	
 	popMatrix();
-
 	
 	picker.stop();
 	
@@ -323,6 +327,8 @@ public abstract class AirshipViewer extends PApplet
     {
 	return centerOffset;
     }
+    
+    
 
     public void setCenterOffset(PVector centerOffset)
     {
