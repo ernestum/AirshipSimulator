@@ -1,9 +1,8 @@
 import airship.Airship;
 import picking.Picker;
-import processing.core.PApplet;
-import processing.core.PFont;
-import processing.core.PVector;
+import processing.core.*;
 import processing.opengl.*;
+import processing.pdf.*;
 
 /**
  * Comments Everywhere!
@@ -36,6 +35,10 @@ public abstract class AirshipViewer extends PApplet
     private PFont	 font	      = createFont("Arial", 71);
 
     private Picker	picker;
+    
+    private PShape human;
+    
+    private boolean pdfExport = false;
 
     protected abstract void initAirshipViewer();
 
@@ -61,7 +64,7 @@ public abstract class AirshipViewer extends PApplet
 	if (openGL)
 	{
 	    size(width, height, OPENGL); //Faster, better looking, better fonts but not platform independent
-	    //hint(ENABLE_DEPTH_SORT);
+	    hint(ENABLE_DEPTH_SORT);
 	    hint(DISABLE_OPENGL_2X_SMOOTH);
 	}
 	else
@@ -80,12 +83,21 @@ public abstract class AirshipViewer extends PApplet
 	smooth();
 
 	picker = new Picker(this);
+	
+	human = loadShape("human.svg");
+	
     }
 
     
 
     public void draw()
     {
+	
+	if(pdfExport)
+	{
+	    beginRaw(PDF, "output.pdf");
+	}
+	background(255);
 	if (ortho)
 	    ortho(0, width, 0, height, -1000, 1000);
 
@@ -97,19 +109,21 @@ public abstract class AirshipViewer extends PApplet
 	stroke(0);
 	fill(0);
 	textFont(font, 16);
-	background(0xFFFFFF);
+	
 
 	
 	pushMatrix();
 
 	translate(center.x + centerOffset.x, center.y + centerOffset.y, center.z + centerOffset.z);
+	
 	scale(zoomFactor);
+	noStroke();
+	shape(human, -0.8125f/2.0f, -1.8f, 0.8125f, 1.8f);
 	rotateX(worldXRotation);
 	rotateY(worldYRotation);
 	
+	
 	Painter.draw(this, airship, highLightedLayer, picker);
-	if(ortho)
-	    translate(-width/2, -height/2);
 	
 	drawGridsAndRulers();
 	
@@ -117,6 +131,12 @@ public abstract class AirshipViewer extends PApplet
 	
 	picker.stop();
 	
+	if(pdfExport)
+	{
+	    endRaw();
+	    pdfExport = false;
+	    System.out.println("output.pdf saved!");
+	}
     }
 
     protected abstract void drawGridsAndRulers();
@@ -126,7 +146,7 @@ public abstract class AirshipViewer extends PApplet
     public void drawRuler(float length, float sectionsDistance, float SectionsSize, PVector direction)
     {
 	fill(100);
-	stroke(0, 150, 190);
+	stroke(255-0, 255-150, 255-190);
 	line(0, 0, 0, direction.x * length, direction.y * length, direction.z * length);
 	textFont(font, 0.7f);
 	ellipseMode(CENTER);
@@ -244,6 +264,13 @@ public abstract class AirshipViewer extends PApplet
 		    break;
 	    }
 	}
+	switch(key)
+	    {
+		case 'p':
+		    pdfExport = true;
+		    System.out.println("expor pdf!");
+		    break;
+	    }
     }
 
     public void mouseMoved()

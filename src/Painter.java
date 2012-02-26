@@ -135,6 +135,7 @@ public class Painter
     public static void draw(PApplet p, Keel k)
     {
 	p.noFill();
+	p.stroke(0);
 	p.strokeWeight(3);
 	p.beginShape();
 	for (double d = 0; d <= 1; d += 1.0 / 100)
