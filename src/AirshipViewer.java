@@ -12,7 +12,6 @@ import processing.pdf.*;
  */
 public abstract class AirshipViewer extends PApplet
 {
-    private boolean       openGL	    = false;
     private boolean       ortho	     = false;
     private int	   width	     = 600, height = 600;
 
@@ -49,28 +48,10 @@ public abstract class AirshipViewer extends PApplet
 	center.x = width / 2;
 	center.y = height / 2;
 
-	if (ortho)
-	{
-	    if (openGL)
-	    {
-		System.err.println("Ortho will not work with OpenGL -> OpenGL is deactivated!");
-		openGL = false;
-
-	    } 
-	    center.x = width;
-	    center.y = height;
-	}
-
-	if (openGL)
-	{
-	    size(width, height, OPENGL); //Faster, better looking, better fonts but not platform independent
-	    hint(ENABLE_DEPTH_SORT);
-	    hint(DISABLE_OPENGL_2X_SMOOTH);
-	}
-	else
-	{
-	    size(width, height, P3D);
-	}
+	
+	size(width, height, P3D);
+	hint(DISABLE_OPENGL_2X_SMOOTH);
+	smooth();
 
 	
 	addMouseWheelListener(new java.awt.event.MouseWheelListener() {
@@ -80,7 +61,7 @@ public abstract class AirshipViewer extends PApplet
 	    }
 	});
 
-	smooth();
+	
 
 	picker = new Picker(this);
 	
@@ -118,7 +99,7 @@ public abstract class AirshipViewer extends PApplet
 	
 	scale(zoomFactor);
 	noStroke();
-	shape(human, -0.8125f/2.0f, -1.8f, 0.8125f, 1.8f);
+	//shape(human, -0.8125f/2.0f, -1.8f, 0.8125f, 1.8f);
 	rotateX(worldXRotation);
 	rotateY(worldYRotation);
 	
@@ -340,26 +321,13 @@ public abstract class AirshipViewer extends PApplet
 	return airship;
     }
 
-    public boolean isOpenGL()
-    {
-	return openGL;
-    }
-
-    public void setOpenGL(boolean openGL)
-    {
-	this.openGL = openGL;
-    }
-
     public PVector getCenterOffset()
     {
 	return centerOffset;
     }
     
-    
-
     public void setCenterOffset(PVector centerOffset)
     {
-	System.out.println("somebody setting the offset");
 	this.centerOffset = centerOffset;
     }
 

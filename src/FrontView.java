@@ -8,7 +8,6 @@ public class FrontView extends AirshipViewer
     protected void initAirshipViewer()
     {
 	setWorldYRotation(HALF_PI);
-	setOpenGL(true);
 	setOrtho(true);
     }
 

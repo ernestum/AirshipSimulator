@@ -9,9 +9,9 @@ public class Main
      */
     public static void main(String[] args)
     {
-	//PApplet.main(new String[] { "FrontView" });
+	PApplet.main(new String[] { "FrontView" });
 	PApplet.main(new String[] { "TopView" });
-	//PApplet.main(new String[] { "NormalView" });
+	PApplet.main(new String[] { "NormalView" });
 	//PApplet.main(new String[] { "AirshipViewer" });
     }
 

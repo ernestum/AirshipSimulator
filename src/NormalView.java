@@ -7,7 +7,6 @@ public class NormalView extends AirshipViewer
     @Override
     protected void initAirshipViewer()
     {
-	setOpenGL(true);
 	setCenterOffset(new PVector(0, 30, 0));
     }
 
