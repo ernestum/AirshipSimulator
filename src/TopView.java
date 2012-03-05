@@ -1,39 +1,45 @@
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 
-public class TopView extends AirshipViewer
+public class TopView extends AirshipView
 {
  
 
-    @Override
-    protected void initAirshipViewer()
+    public TopView(MasterViewer a, PVector pos)
     {
-	setOrtho(true);
-	setWorldXRotation(HALF_PI);
-	setHeight(500);
-	setWidth(700);
-	setZoomFactor(24);
+	super(a, pos);
+	// TODO Auto-generated constructor stub
+    }
+
+    @Override
+    protected void initAirshipView()
+    {
+	//setOrtho(true);
     }
     
-    public void drawLabels()
+    public void drawLabels(PGraphics g)
     {
-	text("Top View", 30, 30);
+	g.text("Top View", 30, 30);
 	
     }
     
-    protected void drawGridsAndRulers()
+    
+    
+    protected void drawGridsAndRulers(PGraphics g)
     {
-	textAlign(LEFT);
+	
 	//drawRuler(15, 5, 20, new PVector(0, 1, 0));
-	drawRuler(15, 5, 20, new PVector(0, 0, 1));
-	drawRuler(15, 5, 20, new PVector(1, 0, 0));
-	drawRuler(15, 5, 20, new PVector(-1, 0, 0));
-	drawGrid(new PVector(-20, 0, -20), new PVector(40, 0, 0), new PVector(0, 0, 40), 40, 40);
+	Painter.drawRuler(g, 15, 5, 20, new PVector(0, 0, 1));
+	Painter.drawRuler(g, 15, 5, 20, new PVector(1, 0, 0));
+	Painter.drawRuler(g, 15, 5, 20, new PVector(-1, 0, 0));
+	Painter.drawGrid(g, new PVector(-20, 0, -20), new PVector(40, 0, 0), new PVector(0, 0, 40), 40, 40);
     }
 
     @Override
     void mouseDraggedActions()
     {
-	mouseYdragsLength();
+	a.mouseXdragsRotation();
+	a.mouseYdragsRoll();
     }
 }

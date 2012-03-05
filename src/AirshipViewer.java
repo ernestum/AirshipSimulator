@@ -98,7 +98,7 @@ public abstract class AirshipViewer extends PApplet
 	rotateY(worldYRotation);
 	
 	
-	Painter.draw(this, airship, highLightedLayer, picker);
+	Painter.draw(this.g, airship, highLightedLayer, picker);
 	
 	drawGridsAndRulers();
 	
@@ -111,58 +111,19 @@ public abstract class AirshipViewer extends PApplet
 	    export = false;
 	}
     }
+    
+    public void drawAirshipHere(PGraphics g)
+    {
+	Painter.draw(this.g, airship, highLightedLayer, picker);
+    }
 
     protected abstract void drawGridsAndRulers();
 
     protected abstract void drawLabels();
 
-    public void drawRuler(float length, float sectionsDistance, float SectionsSize, PVector direction)
-    {
-	fill(100);
-	stroke(255-0, 255-150, 255-190);
-	line(0, 0, 0, direction.x * length, direction.y * length, direction.z * length);
-	textFont(bigFont, 0.7f);
-	ellipseMode(CENTER);
-	for (int i = 0; i < (int) (length / sectionsDistance)+1; i++)
-	{
-	    pushMatrix();
-	    translate(direction.x * i * sectionsDistance, direction.y * i * sectionsDistance, direction.z * i
-		    * sectionsDistance);
-	    rotateY(-(worldYRotation));
-	    rotateX(-(worldXRotation));
-	    text(Math.round(i * sectionsDistance) + "m", 0, 0);
-	    popMatrix();
-	}
-	sectionsDistance /= 5;
-	for (int i = 0; i < (int) (length / sectionsDistance); i++)
-	{
-	    pushMatrix();
-	    translate(direction.x * i * sectionsDistance, direction.y * i * sectionsDistance, direction.z * i
-		    * sectionsDistance);
-	    line(0, -.1f, 0, 0, .1f, 0);
-	    popMatrix();
-	}
-    }
+    
 
-    public void drawGrid(PVector pos, PVector span1, PVector span2, int span1Steps, int span2Steps)
-    {
-	stroke(255-0, 255-150, 255-190);
-	strokeWeight(0.1f);
-	for (int i = 0; i < span1Steps+1; i++)
-	{
-	    PVector start = PVector.add(pos, PVector.mult(span1, (1 / (float) span1Steps) * i));
-	    PVector end = PVector.add(start, span2);
-	    line(start.x, start.y, start.z, end.x, end.y, end.z);
-	}
-
-	for (int i = 0; i < span2Steps+1; i++)
-	{
-	    PVector start = PVector.add(pos, PVector.mult(span2, (1 / (float) span2Steps) * i));
-	    PVector end = PVector.add(start, span1);
-	    line(start.x, start.y, start.z, end.x, end.y, end.z);
-	}
-
-    }
+    
 
     public void mouseWheel(int delta)
     {
@@ -247,7 +208,6 @@ public abstract class AirshipViewer extends PApplet
 
     public void mouseMoved()
     {
-
 	highLightedLayer = picker.get(mouseX, mouseY);
     }
 
@@ -331,6 +291,8 @@ public abstract class AirshipViewer extends PApplet
     {
 	this.ortho = ortho;
     }
+    
+    
 
     public static void main(String[] args)
     {

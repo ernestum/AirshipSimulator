@@ -17,10 +17,10 @@ public class NormalView extends AirshipViewer
     {
 	textAlign(LEFT);
 	//drawRuler(15, 5, 20, new PVector(0, 1, 0));
-	drawRuler(15, 5, 20, new PVector(0, 0, 1));
-	drawRuler(15, 5, 20, new PVector(1, 0, 0));
-	drawRuler(15, 5, 20, new PVector(-1, 0, 0));
-	drawGrid(new PVector(-20, 0, -20), new PVector(40, 0, 0), new PVector(0, 0, 40), 40, 40);
+	Painter.drawRuler(this.g, 15, 5, 20, new PVector(0, 0, 1));
+	Painter.drawRuler(this.g, 15, 5, 20, new PVector(1, 0, 0));
+	Painter.drawRuler(this.g, 15, 5, 20, new PVector(-1, 0, 0));
+	Painter.drawGrid(this.g, new PVector(-20, 0, -20), new PVector(40, 0, 0), new PVector(0, 0, 40), 40, 40);
     }
 
     @Override
